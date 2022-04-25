@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Concert.Migrations
 {
-    public partial class InitialDBSeedDb : Migration
+    public partial class InitialDBSeedDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

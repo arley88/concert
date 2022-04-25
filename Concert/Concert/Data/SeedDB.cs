@@ -29,10 +29,10 @@ namespace Concert.Data
         {
             if (!_context.entrances.Any())
             {
-                await AddEntranceAsync(1, "Norte");
-                await AddEntranceAsync(2, "Sur");
-                await AddEntranceAsync(3, "Oriental");
-                await AddEntranceAsync(4, "Occidental");
+                await AddEntranceAsync("Norte");
+                await AddEntranceAsync("Sur");
+                await AddEntranceAsync("Oriental");
+                await AddEntranceAsync("Occidental");
 
                 await _context.SaveChangesAsync();
             };
@@ -48,18 +48,17 @@ namespace Concert.Data
                     Document = "",
                     Name = "Disponible",
                     Entrance = new() { Id = 0 ,Description = "" },
-                    Date = new DateTime(0000, 00, 00, 00, 00, 00)
+                    Date = new DateTime(0001, 01, 01, 00, 00, 00)
                 };
                 _context.tickets.Add(ticket);
             }
             
         }
 
-        private async Task AddEntranceAsync(int id, string description)
+        private async Task AddEntranceAsync(string description)
         {
             Entrance Entrance = new()
             {
-                Id = id,
                 Description = description
             };
             _context.entrances.Add(Entrance);

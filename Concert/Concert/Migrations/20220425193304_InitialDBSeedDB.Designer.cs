@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Concert.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220422164449_InitialDBSeedDb")]
-    partial class InitialDBSeedDb
+    [Migration("20220425193304_InitialDBSeedDB")]
+    partial class InitialDBSeedDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
