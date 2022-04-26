@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Concert.Data;
 using Concert.Data.Entities;
+using Concert.Models;
 
 namespace Concert.Controllers
 {
@@ -75,11 +76,23 @@ namespace Concert.Controllers
             }
 
             Ticket ticket = await _context.tickets.FindAsync(id);
-            if (ticket == null)
+
+            TicketViewModel model = new()
+            {
+                Id = ticket.Id,
+                Document = ticket.Document,
+                Name = ticket.Name,
+                Date = DateTime.Now,
+                EntranceId = 0,
+                Entrances = (IEnumerable<SelectListItem>)_context.entrances.FirstOrDefault(),
+
+            };
+
+            if (model == null)
             {
                 return NotFound();
             }
-            return View(ticket);
+            return View(model);
         }
 
         // POST: Tickets1/Edit/5
@@ -87,10 +100,12 @@ namespace Concert.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Ticket ticket)
+        public async Task<IActionResult> Edit(int id, TicketViewModel model)
         {
-            Entrance entrance = await _context.entrances.FindAsync(1);
-            if (id != ticket.Id)
+            Entrance entrance = new() { tickets = new List<Ticket>() };
+            entrance = await _context.entrances.FindAsync(1);
+
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -99,14 +114,21 @@ namespace Concert.Controllers
             {
                 try
                 {
-                    ticket.Entrance.Id = entrance.Id;
-                    _context.tickets.Include(t => t.Entrance == entrance);
+                    Ticket ticket = new()
+                    {
+                        Id = model.Id,
+                        WasUsed = true,
+                        Document = model.Document,
+                        Name = model.Name,
+                        Entrance = await _context.entrances.FindAsync(model.EntranceId)
+                    };
+
                     _context.Update(ticket);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TicketExists(ticket.Id))
+                    if (!TicketExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -118,6 +140,37 @@ namespace Concert.Controllers
                 return RedirectToAction(nameof(Consult));
             }
             return RedirectToAction(nameof(Consult));
+            //Entrance entrance = new() { tickets = new List<Ticket>() };
+            //entrance = await _context.entrances.FindAsync(1);
+
+            //if (id != ticket.Id)
+            //{
+            //    return NotFound();
+            //}
+
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+            //        ticket.Entrance.Id = entrance.Id;
+            //        _context.tickets.Include(t => t.Entrance == entrance);
+            //        _context.Update(ticket);
+            //        await _context.SaveChangesAsync();
+            //    }
+            //    catch (DbUpdateConcurrencyException)
+            //    {
+            //        if (!TicketExists(ticket.Id))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    return RedirectToAction(nameof(Consult));
+            //}
+            //return RedirectToAction(nameof(Consult));
         }
 
         // GET: Tickets1/Delete/5
