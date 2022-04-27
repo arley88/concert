@@ -1,4 +1,5 @@
 using Concert.Data;
+using Concert.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<DataContext>(o =>
 });
 
 builder.Services.AddTransient<SeedDB>();
+builder.Services.AddTransient<ICombosHelper, CombosHelper>();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 var app = builder.Build();

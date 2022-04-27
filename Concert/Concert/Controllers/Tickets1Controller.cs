@@ -9,16 +9,19 @@ using Microsoft.EntityFrameworkCore;
 using Concert.Data;
 using Concert.Data.Entities;
 using Concert.Models;
+using Concert.Helpers;
 
 namespace Concert.Controllers
 {
     public class Tickets1Controller : Controller
     {
         private readonly DataContext _context;
+        private readonly ICombosHelper _combosHelper;
 
-        public Tickets1Controller(DataContext context)
+        public Tickets1Controller(DataContext context, ICombosHelper combosHelper)
         {
             _context = context;
+            _combosHelper = combosHelper;
         }
 
         // GET: Tickets1
@@ -76,6 +79,7 @@ namespace Concert.Controllers
             }
 
             Ticket ticket = await _context.tickets.FindAsync(id);
+            Entrance entrance = await _context.entrances.FindAsync(id);
 
             TicketViewModel model = new()
             {
@@ -84,7 +88,7 @@ namespace Concert.Controllers
                 Name = ticket.Name,
                 Date = DateTime.Now,
                 EntranceId = 0,
-                Entrances = (IEnumerable<SelectListItem>)_context.entrances.FirstOrDefault(),
+                Entrances = await _combosHelper.GetComboEntrancesAsync()
 
             };
 
@@ -104,7 +108,6 @@ namespace Concert.Controllers
         {
             Entrance entrance = new() { tickets = new List<Ticket>() };
             entrance = await _context.entrances.FindAsync(1);
-
             if (id != model.Id)
             {
                 return NotFound();
@@ -120,6 +123,7 @@ namespace Concert.Controllers
                         WasUsed = true,
                         Document = model.Document,
                         Name = model.Name,
+                        Date = model.Date,
                         Entrance = await _context.entrances.FindAsync(model.EntranceId)
                     };
 
@@ -211,9 +215,6 @@ namespace Concert.Controllers
             return View();
         }
 
-        // POST: Tickets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Consult(int id)

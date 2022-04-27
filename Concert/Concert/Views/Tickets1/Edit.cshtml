@@ -12,7 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+            <input type="hidden" asp-for="@Model.Entrances" />
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="WasUsed" /> @Html.DisplayNameFor(model => model.WasUsed)
@@ -56,8 +56,8 @@
         $(document).ready(function () {
             $("#Id").change(function () {
                 debugger;
-                $("#StateId").empty();
-                $("#StateId").append('<option value="0">[Selecciona una entrada...]</option>');
+                $("#EntranceId").empty();
+                $("#EntranceId").append('<option value="0">[Selecciona una entrada...]</option>');
                 $("#CityId").empty();
                 $("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
                 $.ajax({
