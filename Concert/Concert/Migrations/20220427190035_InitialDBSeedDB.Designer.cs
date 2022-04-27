@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Concert.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220425193304_InitialDBSeedDB")]
+    [Migration("20220427190035_InitialDBSeedDB")]
     partial class InitialDBSeedDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

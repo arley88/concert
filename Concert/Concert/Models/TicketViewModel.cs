@@ -21,8 +21,8 @@ namespace Concert.Models
         public DateTime Date { get; set; }
 
 
-        [Display(Name = "País")]
-        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar un país.")]
+        [Display(Name = "Entrada")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar una Entrada.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public int EntranceId { get; set; }
 

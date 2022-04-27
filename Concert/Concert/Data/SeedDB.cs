@@ -47,7 +47,8 @@ namespace Concert.Data
                     WasUsed = false,
                     Document = "",
                     Name = "Disponible",
-                    Entrance = new() { Id = 0 ,Description = "" },
+                    Entrance = _context.entrances.FirstOrDefault(),
+                    //Entrance = new() { Id = 1 ,Description = "Norte" },
                     Date = new DateTime(0001, 01, 01, 00, 00, 00)
                 };
                 _context.tickets.Add(ticket);

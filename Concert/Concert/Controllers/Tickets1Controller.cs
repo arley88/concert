@@ -39,6 +39,7 @@ namespace Concert.Controllers
             }
 
             var ticket = await _context.tickets
+                .Include(t => t.Entrance)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
@@ -49,28 +50,7 @@ namespace Concert.Controllers
         }
 
         // GET: Tickets1/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Tickets1/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,WasUsed,Document,Name,Date")] Ticket ticket)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(ticket);
-        }
-
-        // GET: Tickets1/Edit/5
+       
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -144,66 +124,7 @@ namespace Concert.Controllers
                 return RedirectToAction(nameof(Consult));
             }
             return RedirectToAction(nameof(Consult));
-            //Entrance entrance = new() { tickets = new List<Ticket>() };
-            //entrance = await _context.entrances.FindAsync(1);
-
-            //if (id != ticket.Id)
-            //{
-            //    return NotFound();
-            //}
-
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        ticket.Entrance.Id = entrance.Id;
-            //        _context.tickets.Include(t => t.Entrance == entrance);
-            //        _context.Update(ticket);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!TicketExists(ticket.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Consult));
-            //}
-            //return RedirectToAction(nameof(Consult));
-        }
-
-        // GET: Tickets1/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var ticket = await _context.tickets
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-
-            return View(ticket);
-        }
-
-        // POST: Tickets1/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var ticket = await _context.tickets.FindAsync(id);
-            _context.tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+           
         }
 
         private bool TicketExists(int id)
